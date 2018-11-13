@@ -32,6 +32,7 @@ void Widget::onQTcpServer_newConnection()
 void Widget::onQTcpSocket_readyRead()
 {
     QString reponse = socketDialogueClient->readAll();
+<<<<<<< HEAD
     //Qbytearray reponse = socketDialogueClient->readAll();
     QTextStream texte(socketDialogueClient);
    // QString reponse;
@@ -41,6 +42,13 @@ void Widget::onQTcpSocket_readyRead()
     //{
     //    reponse = getenv("USERNAME");
     //}
+=======
+    QTextStream texte(socketDialogueClient);
+   // QString reponse;
+
+//    ui->textEditLogs->append(donnees);
+
+>>>>>>> c8b190da05ed55ad11c9ca08489437ec95bd384d
     //comparaison de la chaine 1 (donnees) a la chaine 2 (caractere)
     if( reponse =='u'){
         reponse = getenv("USERNAME");
@@ -86,6 +94,10 @@ void Widget::onQProcess_readyReadStandardOutput()
             socketDialogueClient->write(reponse.toLatin1());
         }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c8b190da05ed55ad11c9ca08489437ec95bd384d
 void Widget::on_pushButtonLancerServeur_clicked()
 {
     //listen

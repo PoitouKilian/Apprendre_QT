@@ -49,31 +49,26 @@ void DAB_MainWindow::on_pushButtonEnvoi_clicked()
 
     if(ui->radioButtonSolde->isChecked())
     {
-       commande = 'S';
-       out<<taille<<commande;
-       taille=tampon.size()-sizeof(taille);
-       tampon.seek(0);
-       out<<taille;
-       socketClientBanque->write(tampon.buffer());
+        commande = 'S';
+        out<<taille<<commande;
+
     }
     if(ui->radioButtonRetrait->isChecked())
     {
         commande = 'R';
         out<<taille<<commande<<montant;
-        taille=tampon.size()-sizeof(taille);
-        tampon.seek(0);
-        out<<taille;
-        socketClientBanque->write(tampon.buffer());
+
     }
     if(ui->radioButtonDepot->isChecked())
     {
         commande = 'D';
         out<<taille<<commande<<montant;
-        taille=tampon.size()-sizeof(taille);
-        tampon.seek(0);
-        out<<taille;
-        socketClientBanque->write(tampon.buffer());
+
     }
+    taille=tampon.size()-sizeof(taille);
+    tampon.seek(0);
+    out<<taille;
+    socketClientBanque->write(tampon.buffer());
 }
 
 void DAB_MainWindow::on_pushButtonNumero_clicked()
@@ -101,18 +96,18 @@ void DAB_MainWindow::onQTcpSocket_connected()
 {
     ui->listWidgetEtat->addItem("Connecté à la banque");
     ui->pushButtonConnexion->setText("Déconnexion");
-    ui->groupBoxOperation->setEnabled(1);
-    ui->lineEditAdresse->setEnabled(0);
-    ui->lineEditPort->setEnabled(0);
+    ui->groupBoxOperation->setEnabled(true);
+    ui->lineEditAdresse->setEnabled(false);
+    ui->lineEditPort->setEnabled(false);
 
 }
 void DAB_MainWindow::onQTcpSocket_disconnected()
 {
     ui->listWidgetEtat->addItem("Déconnexion de la banque");
     ui->pushButtonConnexion->setText("Connexion");
-    ui->groupBoxOperation->setEnabled(0);
-    ui->lineEditAdresse->setEnabled(1);
-    ui->lineEditPort->setEnabled(1);
+    ui->groupBoxOperation->setEnabled(false);
+    ui->lineEditAdresse->setEnabled(true);
+    ui->lineEditPort->setEnabled(true);
 }
 void DAB_MainWindow::onQTcpSocket_error(QAbstractSocket::SocketError socketError)
 {
@@ -125,16 +120,16 @@ void DAB_MainWindow::onQTcpSocket_readyRead()
     // si le nombre d'octets recu est au moins egal a celui de la taille de ce que l'on doit recevoir
     if (socketClientBanque->bytesAvailable() >= (qint64)sizeof(taille))
     {
-    // association de la socket au flux d'entree
-    QDataStream in(socketClientBanque);
-    // extraire la taille de ce que l'on doit recevoir
-    in >> taille;
-    // si le nombre d'octets recu est au moins egal a celui de ce que l'on doit recevoir
-    if (socketClientBanque->bytesAvailable() >= (qint64)taille)
-    {
-    // extraire le message de la banque et le mettre dans message
-    in>>message;
-    }
+        // association de la socket au flux d'entree
+        QDataStream in(socketClientBanque);
+        // extraire la taille de ce que l'on doit recevoir
+        in >> taille;
+        // si le nombre d'octets recu est au moins egal a celui de ce que l'on doit recevoir
+        if (socketClientBanque->bytesAvailable() >= (qint64)taille)
+        {
+            // extraire le message de la banque et le mettre dans message
+            in>>message;
+        }
     }
     ui->lineEditMessage->setText(message);
 }

@@ -1,7 +1,6 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <QWidget>
 #include "alveoleslibres.h"
 
 namespace Ui {
@@ -15,15 +14,16 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget();
+    void AfficherAlveolesLibres();
 
-private slots:
-    void on_pushButtonReserver_clicked();
+    private slots:
+        void on_pushButtonReserver_clicked();
 
-    void on_pushButtonLiberer_clicked();
+        void on_pushButtonLiberer_clicked();
 
 private:
     Ui::Widget *ui;
-    AlveolesLibres *alveoles;
+    AlveolesLibres lesAlveoles;
 };
 
 #endif // WIDGET_H

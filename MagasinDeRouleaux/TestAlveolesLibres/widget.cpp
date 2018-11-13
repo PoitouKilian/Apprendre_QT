@@ -4,29 +4,45 @@
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
-    alveoles(new AlveolesLibres(4,5))
-
-{
-    ui->setupUi(this);
-    ui->pushButtonLiberer->setEnabled(false);
-    for(const int & valeur: *alveoles)
+    lesAlveoles(4,5)
     {
-        ui->listWidgetNumero->addItem(QString :: number(valeur));
+        ui->setupUi(this);
+        AfficherAlveolesLibres();
     }
-}
+
 
 Widget::~Widget()
 {
     delete ui;
 }
 
+void Widget::AfficherAlveolesLibres()
+{
+    ui->listWidgetNumero->clear();
+    for(int & numAlveole : lesAlveoles)
+        ui->listWidgetNumero->addItem(QString::number(numAlveole));
+}
+
 void Widget::on_pushButtonReserver_clicked()
 {
-   /* pop_back(alveoles);
-    ui->listWidgetRangeeEtColonne->addItem(QString :: number(alveoles));*/
+    int rangee;
+    int colonne;
+    if(lesAlveoles.Reserver(rangee,colonne))
+    {
+        QString texte = QString::number(rangee) + "," + QString::number(colonne);
+        ui->listWidgetRangeeEtColonne->addItem(texte);
+        AfficherAlveolesLibres();
+    }
 }
 
 void Widget::on_pushButtonLiberer_clicked()
 {
+    QListWidgetItem *item = ui->listWidgetRangeeEtColonne->currentItem();
+    QString texte = item->text();
+    delete item;
+    QStringList coord = texte.split(",");
+    lesAlveoles.Liberer(coord[0].toInt(),coord[1].toInt());
+    AfficherAlveolesLibres();
+    ui->listWidgetRangeeEtColonne->setCurrentRow(-1);
 
 }

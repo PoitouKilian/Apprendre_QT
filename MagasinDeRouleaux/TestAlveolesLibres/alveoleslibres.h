@@ -10,6 +10,8 @@
 #define ALVEOLESLIBRES_H
 
 #include <vector>
+#include <QDebug>
+#include <QWidget>
 
 using namespace std;
 
@@ -19,12 +21,12 @@ class AlveolesLibres : public PileEntier
 {
 public:
     AlveolesLibres(const int _nbRangees=10, const int _nbColonne=20);
-    void Liberer(const int _rangee,const int _colonne);
-    bool Reserver(int &_rangee,  int &_colonne);
+    void Liberer(const int _rangee, const int _colonne);
+    bool Reserver(int &_rangee, int &_colonne);
 
 private:
-    int rangee;
-    int colonne;
+    int nbAlveoles;
+    int nbColonnes;
 
 };
 

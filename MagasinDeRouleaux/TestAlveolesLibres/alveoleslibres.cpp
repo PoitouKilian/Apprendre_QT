@@ -12,14 +12,13 @@
   @param _rangee n° de la rangée ou se trouvait le rouleau
   @param _colonne n° de la colonne ou se trouvait le rouleau
   */
-AlveolesLibres::AlveolesLibres(const int _nbRangees, const int _nbColonne)
+AlveolesLibres::AlveolesLibres(const int _nbRangees, const int _nbColonnes) :
+nbAlveoles(_nbRangees * _nbColonnes),
+nbColonnes(_nbColonnes)
 {
-    for(int i=1;i<=_nbRangees*_nbColonne;i++)
-    {
-        push_back(i);
-    }
-    rangee = _nbRangees;
-    colonne = _nbColonne;
+
+    for(int indice = 1 ; indice <= nbAlveoles ; indice++ )
+        push_back(indice);
 }
 
 /**
@@ -30,7 +29,8 @@ AlveolesLibres::AlveolesLibres(const int _nbRangees, const int _nbColonne)
   */
 void AlveolesLibres::Liberer(const int _rangee, const int _colonne)
 {
-
+    int alveole =  nbColonnes * (_rangee -1) + _colonne;
+    push_back(alveole);
 }
 
 /**
@@ -42,5 +42,15 @@ void AlveolesLibres::Liberer(const int _rangee, const int _colonne)
  */
 bool AlveolesLibres::Reserver(int &_rangee, int &_colonne)
 {
+    bool retour = false;
+        if(!empty())
+        {
+            int alveole = back();
+            pop_back();
+            _rangee = ((alveole - 1) / nbColonnes )+ 1;
+            _colonne = ((alveole - 1) % nbColonnes )+ 1 ;
+            retour = true;
+        }
 
+        return retour;
 }
